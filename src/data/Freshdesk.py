@@ -25,8 +25,8 @@ print("Current working directory:", os.getcwd())
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Freshdesk API configuration
-FRESHDESK_DOMAIN = "https://cintoo.freshdesk.com"
-API_KEY = "AYrGLqYvCFrlwBTMEFb"  # Replace with your actual API key
+FRESHDESK_DOMAIN = "https://.freshdesk.com"
+API_KEY = ""  # Replace with your actual API key
 
 def get_tickets(start_date, end_date):
     url = f"{FRESHDESK_DOMAIN}/api/v2/tickets"
