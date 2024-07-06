@@ -1,0 +1,51 @@
+Data Analysis Results
+
+None
+
+Missing values:
+id                   0
+created_at           0
+subject              0
+status               0
+priority             0
+tags                 0
+full_text            0
+preprocessed_text    0
+language             0
+ticket_length        0
+Predicted_Tags       0
+dtype: int64
+
+Language distribution:
+en    127
+fr      4
+Name: language, dtype: int64
+
+Ticket length statistics:
+count      131.000000
+mean      1831.175573
+std       2561.548881
+min         28.000000
+25%        139.500000
+50%        653.000000
+75%       2398.500000
+max      12944.000000
+Name: ticket_length, dtype: float64
+
+Most common words:
+[('cintoo', 307), ('hi', 260), ('john', 212), ('https', 164), ('project', 149), ('tapia', 147), ('regards', 141), ('support', 140), ('file', 136), ('issue', 129), ('please', 126), ('customer', 119), ('manager', 118), ('data', 107), ('technical', 102), ('cloud', 96), ('cid', 93), ('email', 92), ('scan', 90), ('leonardo', 89)]
+
+Priority distribution:
+2    120
+1      8
+3      3
+Name: priority, dtype: int64
+
+Most common tags:
+[('Cintoo Cloud', 51), ('', 37), ('Billing', 29), ('Cintoo Connect', 11), ('Account', 5), ('Crop Tool', 4), ('Custom Branding', 3), ('Invalid', 3), ('Annotations', 3), ('shared url', 2), ('Point Cloud', 2), ('e57', 2), ('SSO', 2), ('ACC', 2), ('Import Model', 2), ('Autodesk Construction Cloud', 2), ('Users and Permissions', 2), ('Measurement', 2), ('Alignment Tool', 2), ('3D View', 2)]
+
+Potential recurring issues:
+[('john tapia', 147), ('tapia technical', 97), ('technical support', 97), ('best regards', 63), ('support manager', 54), ('regards cécile', 50), ('leonardo hidd', 47), ('hidd fonteles', 47), ('invoice sent', 45), ('support engineer', 43)]
+
+Number of tickets potentially related to knowledge base confusion: 31
+
