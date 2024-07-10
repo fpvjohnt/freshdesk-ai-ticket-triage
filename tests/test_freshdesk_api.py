@@ -1,9 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import unittest
 from unittest.mock import patch, MagicMock
 from datetime import datetime, timedelta
 import pytz
 import logging
-from freshdesk import FreshdeskAPI
+from src.data.freshdesk import FreshdeskAPI
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -18,7 +22,7 @@ class TestFreshdeskAPI(unittest.TestCase):
     def tearDown(self):
         logger.info("Tear down TestFreshdeskAPI")
 
-    @patch('freshdesk.requests.request')
+    @patch('src.data.freshdesk.requests.request')
     def test_fetch_new_tickets(self, mock_request):
         logger.info("Testing fetch_new_tickets method")
         # Mock the API response
@@ -42,7 +46,7 @@ class TestFreshdeskAPI(unittest.TestCase):
             logger.error(f"fetch_new_tickets test failed: {str(e)}")
             raise
 
-    @patch('freshdesk.requests.request')
+    @patch('src.data.freshdesk.requests.request')
     def test_get_ticket_details(self, mock_request):
         logger.info("Testing get_ticket_details method")
         mock_response = MagicMock()
@@ -59,7 +63,7 @@ class TestFreshdeskAPI(unittest.TestCase):
             logger.error(f"get_ticket_details test failed: {str(e)}")
             raise
 
-    @patch('freshdesk.requests.request')
+    @patch('src.data.freshdesk.requests.request')
     def test_update_ticket_tags(self, mock_request):
         logger.info("Testing update_ticket_tags method")
         mock_response = MagicMock()
@@ -75,7 +79,7 @@ class TestFreshdeskAPI(unittest.TestCase):
             logger.error(f"update_ticket_tags test failed: {str(e)}")
             raise
 
-    @patch('freshdesk.requests.request')
+    @patch('src.data.freshdesk.requests.request')
     def test_create_ticket(self, mock_request):
         logger.info("Testing create_ticket method")
         mock_response = MagicMock()
@@ -92,7 +96,7 @@ class TestFreshdeskAPI(unittest.TestCase):
             logger.error(f"create_ticket test failed: {str(e)}")
             raise
 
-    @patch('freshdesk.requests.request')
+    @patch('src.data.freshdesk.requests.request')
     def test_get_ticket_fields(self, mock_request):
         logger.info("Testing get_ticket_fields method")
         mock_response = MagicMock()
@@ -112,7 +116,7 @@ class TestFreshdeskAPI(unittest.TestCase):
 
     def test_api_error_handling(self):
         logger.info("Testing API error handling")
-        with patch('freshdesk.requests.request') as mock_request:
+        with patch('src.data.freshdesk.requests.request') as mock_request:
             mock_response = MagicMock()
             mock_response.status_code = 400
             mock_response.json.return_value = {'errors': ['Bad Request']}
