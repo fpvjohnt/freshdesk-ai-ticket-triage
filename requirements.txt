@@ -1,0 +1,10 @@
+pandas
+numpy
+scikit-learn
+nltk
+pytz
+requests
+python-dotenv
+ratelimit
+cachetools
+joblib
