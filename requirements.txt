@@ -8,3 +8,5 @@ python-dotenv
 ratelimit
 cachetools
 joblib
+matplotlib
+seaborn
