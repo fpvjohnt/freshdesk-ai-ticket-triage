@@ -12,6 +12,10 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import nltk
 import logging
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,8 +32,8 @@ logger.info(f"Current working directory: {os.getcwd()}")
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Freshdesk API configuration
-FRESHDESK_DOMAIN = "https://.freshdesk.com"
-API_KEY = ""  # Replace with your actual API key
+FRESHDESK_DOMAIN = os.getenv('FRESHDESK_DOMAIN', 'https://your-domain.freshdesk.com')
+API_KEY = os.getenv('FRESHDESK_API_KEY', '')
 
 # Check if matplotlib and seaborn are available
 try:
@@ -47,7 +51,7 @@ class FreshdeskAPI:
             "Content-Type": "application/json",
         }
 
-    def get_tickets(self, start_date, end_date):
+    def fetch_new_tickets(self, start_date, end_date):
         url = f"{self.base_url}/tickets"
         params = {
             "order_by": "created_at",
@@ -253,7 +257,7 @@ def main():
     end_date = datetime.datetime.now(pytz.UTC)
 
     # Fetch tickets
-    tickets = freshdesk_api.get_tickets(start_date, end_date)
+    tickets = freshdesk_api.fetch_new_tickets(start_date, end_date)
 
     # Analyze tickets
     df, all_words = analyze_tickets(freshdesk_api, tickets)
