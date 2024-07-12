@@ -4,6 +4,11 @@ from datetime import datetime
 import pytz
 import logging
 import os
+import sys
+
+# Ensure the src/data directory is in the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'data')))
+
 from freshdesk import FreshdeskAPI
 
 # Set up logging
@@ -12,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class TestFreshdeskAPI(unittest.TestCase):
 
-    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://your-domain.freshdesk.com', 'FRESHDESK_API_KEY': 'your_api_key'})
+    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://cintoo.freshdesk.com', 'FRESHDESK_API_KEY': 'AYrGLqYvCFrlwBTMEFb'})
     def setUp(self):
         self.api = FreshdeskAPI()
         logger.info("Set up TestFreshdeskAPI")
@@ -95,7 +100,7 @@ class TestFreshdeskAPI(unittest.TestCase):
         self.assertEqual(fields[1]['name'], 'Status')
         logger.info("get_ticket_fields test passed")
 
-    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://your-domain.freshdesk.com', 'FRESHDESK_API_KEY': 'your_api_key'})
+    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://cintoo.freshdesk.com', 'FRESHDESK_API_KEY': 'AYrGLqYvCFrlwBTMEFb'})
     def test_api_error_handling(self):
         logger.info("Testing API error handling")
         with patch('freshdesk.requests.get') as mock_get:
@@ -103,8 +108,11 @@ class TestFreshdeskAPI(unittest.TestCase):
             mock_response.status_code = 404
             mock_get.return_value = mock_response
 
-            with self.assertRaises(Exception):
+            with self.assertRaises(Exception) as context:
                 self.api.get_ticket_details(1)
+            
+            self.assertTrue('Ticket 1 not found' in str(context.exception))
+            mock_get.assert_called_with(f'https://cintoo.freshdesk.com/api/v2/tickets/1', headers=self.api.headers, auth=('AYrGLqYvCFrlwBTMEFb', 'X'))
             logger.info("API error handling test passed")
 
 if __name__ == '__main__':

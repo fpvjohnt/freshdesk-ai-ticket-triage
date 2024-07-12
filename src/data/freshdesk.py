@@ -102,6 +102,9 @@ class FreshdeskAPI:
         response = requests.get(url, headers=self.headers, auth=(API_KEY, 'X'))
         if response.status_code == 200:
             return response.json()
+        elif response.status_code == 404:
+            logger.error(f"Failed to retrieve details for ticket {ticket_id}. Status code: 404")
+            raise Exception(f"Ticket {ticket_id} not found")
         else:
             logger.error(f"Failed to retrieve details for ticket {ticket_id}. Status code: {response.status_code}")
             return None
