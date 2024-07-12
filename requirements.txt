@@ -1,12 +1,9 @@
+requests
 pandas
-numpy
+joblib
+pytz
 scikit-learn
 nltk
-pytz
-requests
 python-dotenv
-ratelimit
-cachetools
-joblib
 matplotlib
 seaborn
