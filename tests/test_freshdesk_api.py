@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 class TestFreshdeskAPI(unittest.TestCase):
 
-    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://cintoo.freshdesk.com', 'FRESHDESK_API_KEY': 'AYrGLqYvCFrlwBTMEFb'})
     def setUp(self):
         self.api = FreshdeskAPI()
         logger.info("Set up TestFreshdeskAPI")
@@ -25,7 +24,7 @@ class TestFreshdeskAPI(unittest.TestCase):
     def tearDown(self):
         logger.info("Tear down TestFreshdeskAPI")
 
-    @patch('freshdesk.requests.get')
+    @patch('src.data.freshdesk.requests.get')
     def test_fetch_new_tickets(self, mock_get):
         logger.info("Testing fetch_new_tickets method")
         mock_response = MagicMock()
@@ -44,7 +43,7 @@ class TestFreshdeskAPI(unittest.TestCase):
         mock_get.assert_called()
         logger.info("fetch_new_tickets test passed")
 
-    @patch('freshdesk.requests.get')
+    @patch('src.data.freshdesk.requests.get')
     def test_get_ticket_details(self, mock_get):
         logger.info("Testing get_ticket_details method")
         mock_response = MagicMock()
@@ -58,7 +57,7 @@ class TestFreshdeskAPI(unittest.TestCase):
         self.assertEqual(ticket['subject'], 'Test Ticket')
         logger.info("get_ticket_details test passed")
 
-    @patch('freshdesk.requests.put')
+    @patch('src.data.freshdesk.requests.put')
     def test_update_ticket_tags(self, mock_put):
         logger.info("Testing update_ticket_tags method")
         mock_response = MagicMock()
@@ -71,7 +70,7 @@ class TestFreshdeskAPI(unittest.TestCase):
         self.assertEqual(updated_ticket['tags'], ['new_tag'])
         logger.info("update_ticket_tags test passed")
 
-    @patch('freshdesk.requests.post')
+    @patch('src.data.freshdesk.requests.post')
     def test_create_ticket(self, mock_post):
         logger.info("Testing create_ticket method")
         mock_response = MagicMock()
@@ -85,7 +84,7 @@ class TestFreshdeskAPI(unittest.TestCase):
         self.assertEqual(new_ticket['description'], 'Test description')
         logger.info("create_ticket test passed")
 
-    @patch('freshdesk.requests.get')
+    @patch('src.data.freshdesk.requests.get')
     def test_get_ticket_fields(self, mock_get):
         logger.info("Testing get_ticket_fields method")
         mock_response = MagicMock()
@@ -100,20 +99,23 @@ class TestFreshdeskAPI(unittest.TestCase):
         self.assertEqual(fields[1]['name'], 'Status')
         logger.info("get_ticket_fields test passed")
 
-    @patch.dict(os.environ, {'FRESHDESK_DOMAIN': 'https://cintoo.freshdesk.com', 'FRESHDESK_API_KEY': 'AYrGLqYvCFrlwBTMEFb'})
-    def test_api_error_handling(self):
+    @patch('src.data.freshdesk.requests.get')
+    def test_api_error_handling(self, mock_get):
         logger.info("Testing API error handling")
-        with patch('freshdesk.requests.get') as mock_get:
-            mock_response = MagicMock()
-            mock_response.status_code = 404
-            mock_get.return_value = mock_response
+        mock_response = MagicMock()
+        mock_response.status_code = 404
+        mock_get.return_value = mock_response
 
-            with self.assertRaises(Exception) as context:
-                self.api.get_ticket_details(1)
-            
-            self.assertTrue('Ticket 1 not found' in str(context.exception))
-            mock_get.assert_called_with(f'https://cintoo.freshdesk.com/api/v2/tickets/1', headers=self.api.headers, auth=('AYrGLqYvCFrlwBTMEFb', 'X'))
-            logger.info("API error handling test passed")
+        with self.assertRaises(Exception) as context:
+            self.api.get_ticket_details(1)
+        
+        self.assertTrue('Ticket 1 not found' in str(context.exception))
+        mock_get.assert_called_with(
+            f'{os.getenv("FRESHDESK_DOMAIN", "https://cintoo.freshdesk.com")}/api/v2/tickets/1',
+            headers=self.api.headers,
+            auth=(os.getenv('FRESHDESK_API_KEY', ''), 'X')
+        )
+        logger.info("API error handling test passed")
 
 if __name__ == '__main__':
     unittest.main()
