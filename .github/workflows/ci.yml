@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      FRESHDESK_DOMAIN: https://cintoo.freshdesk.com
+      FRESHDESK_API_KEY: ${{ secrets.FRESHDESK_API_KEY }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
