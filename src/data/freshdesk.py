@@ -1,19 +1,3 @@
-import os
-import requests
-import logging
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
-# Freshdesk API configuration
-FRESHDESK_DOMAIN = os.getenv('FRESHDESK_DOMAIN', 'https://your-domain.freshdesk.com')
-API_KEY = os.getenv('FRESHDESK_API_KEY', '')
-
 class FreshdeskAPI:
     def __init__(self):
         self.base_url = f"{FRESHDESK_DOMAIN}/api/v2"
